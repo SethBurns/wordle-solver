@@ -57,3 +57,14 @@
   border-radius: 5px;
   padding: 0px 4px;
 }
+
+@media (max-width: 950px) {
+  .yellow,
+  .green {
+    width: 30px;
+    font-size: 30px;
+  }
+  .black {
+    width: 80vw;
+  }
+}
