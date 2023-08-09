@@ -58,6 +58,29 @@
   padding: 0px 4px;
 }
 
+main {
+  display: flex;
+}
+
+.letters-left {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.words-left {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.letter-count {
+  border-style: solid;
+  padding: 0px 3px;
+  margin: 2px;
+  border-color: rgb(135, 135, 135);
+}
+
 @media (max-width: 950px) {
   .yellow,
   .green {

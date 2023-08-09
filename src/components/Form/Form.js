@@ -29,7 +29,6 @@ export const Form = () => {
       }
       return true;
     });
-
     return blackFilteredWords;
   }
 
@@ -81,21 +80,35 @@ export const Form = () => {
   function filterGreen(G1, G2, G3, G4, G5, wordsArray) {
     let filteredGreen = wordsArray;
     if (G1.length) {
-      filteredGreen = filteredGreen.filter(word => word.charAt(0) === G1)
+      filteredGreen = filteredGreen.filter((word) => word.charAt(0) === G1);
     }
     if (G2.length) {
-      filteredGreen = filteredGreen.filter(word => word.charAt(1) === G2)
+      filteredGreen = filteredGreen.filter((word) => word.charAt(1) === G2);
     }
     if (G3.length) {
-      filteredGreen = filteredGreen.filter(word => word.charAt(2) === G3)
+      filteredGreen = filteredGreen.filter((word) => word.charAt(2) === G3);
     }
     if (G4.length) {
-      filteredGreen = filteredGreen.filter(word => word.charAt(3) === G4)
+      filteredGreen = filteredGreen.filter((word) => word.charAt(3) === G4);
     }
     if (G5.length) {
-      filteredGreen = filteredGreen.filter(word => word.charAt(4) === G5)
+      filteredGreen = filteredGreen.filter((word) => word.charAt(4) === G5);
     }
     return filteredGreen;
+  }
+
+  function countLettersInWords(wordsArray) {
+    return wordsArray.reduce((letterCount, word) => {
+      word.split('').forEach((char) => {
+        if (letterCount[char]) {
+          letterCount[char]++;
+        } else {
+          letterCount[char] = 1;
+        }
+      });
+
+      return letterCount;
+    }, {});
   }
 
   const unusedAnswers = words
@@ -113,14 +126,29 @@ export const Form = () => {
     Y5,
     filteredGreenWords
   );
-  
+
   const filteredWords = filterBlack(
     blackLetters.split(''),
     yellowFilteredWords
-  ).map((word) => {
+  );
+
+  const renderedWords = filteredWords.map((word) => {
     return (
       <div className="word-card" key={word}>
         <p>{word.toUpperCase()}</p>
+      </div>
+    );
+  });
+
+  const lettersLeft = countLettersInWords(filteredWords);
+  const renderedLettersLeft = Object.entries(lettersLeft)
+  .sort((a, b) => b[1] - a[1])
+  .map((letter) => {
+    return (
+      <div className="letter-count" key={letter[0]}>
+        <p>
+          {letter[0]}: {letter[1]}
+        </p>
       </div>
     );
   });
@@ -244,7 +272,16 @@ export const Form = () => {
           }}
         ></input>
       </form>
-      <main className="word-cards">{filteredWords}</main>
+      <main className="word-cards">
+          <h3>Amount of each letter left in remaining words:</h3>
+        <section className='letters-left'>
+          {renderedLettersLeft}
+        </section>
+        <h3>Remaining Available Words:</h3>
+        <section className='words-left'>
+          {renderedWords}
+        </section>
+      </main>
     </div>
   );
 };
