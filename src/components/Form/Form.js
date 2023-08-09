@@ -18,6 +18,7 @@ export const Form = () => {
     'Hide Previous NYT Answers'
   );
   const [NYThidden, setNYThidden] = useState(false);
+  const [selectedLetters, setSelectedLetters] = useState([]);
 
   function filterBlack(lettersArray, wordsArray) {
     const uppercaseLettersArray = lettersArray.map((letter) =>
@@ -126,21 +127,63 @@ export const Form = () => {
     }
   }
 
-  function filterPrev() {
-    if(NYThidden) {
-      return words
-      .map((word) => word.toUpperCase())
-      .filter((word) => {
-        return !previousAnswers.includes(word);
-      });
-    } else {
-      return words.map(word => word.toUpperCase())
+  function handleLetterClick(e, letter) {
+    e.preventDefault();
+    if (selectedLetters.includes(letter)) {
+      const index = selectedLetters.indexOf(letter);
+      let arrayCopy = selectedLetters.slice();
+      arrayCopy.splice(index, 1);
+      setSelectedLetters(arrayCopy);
+    } else if (selectedLetters.length < 5) {
+      setSelectedLetters([...selectedLetters, letter]);
     }
   }
 
-  const unusedAnswers = filterPrev()
+  function includesAllLetters(word, lettersArray) {
+    for (const letter of lettersArray) {
+      if (!word.includes(letter)) {
+        return false;
+      }
+    }
+    return true;
+  }
 
-  const filteredGreenWords = filterGreen(G1, G2, G3, G4, G5, unusedAnswers);
+  function filterSelectedLetters(words, letters) {
+    console.log('w', words)
+    console.log('L', letters)
+    if (letters.length) {
+      return words.filter((word) => includesAllLetters(word, letters));
+    } else {
+      return words;
+    }
+  }
+
+  function filterPrev() {
+    if (NYThidden) {
+      return words
+        .map((word) => word.toUpperCase())
+        .filter((word) => {
+          return !previousAnswers.includes(word);
+        });
+    } else {
+      return words.map((word) => word.toUpperCase());
+    }
+  }
+
+  const unusedAnswers = filterPrev();
+  const filteredLetterAnswers = filterSelectedLetters(
+    unusedAnswers,
+    selectedLetters
+  );
+
+  const filteredGreenWords = filterGreen(
+    G1,
+    G2,
+    G3,
+    G4,
+    G5,
+    filteredLetterAnswers
+  );
   const yellowFilteredWords = filterYellow(
     Y1,
     Y2,
@@ -168,7 +211,17 @@ export const Form = () => {
     .sort((a, b) => b[1] - a[1])
     .map((letter) => {
       return (
-        <div className="letter-count" key={letter[0]}>
+        <div
+          className={
+            selectedLetters.includes(letter[0].toString())
+              ? 'selected letter-count'
+              : 'letter-count'
+          }
+          key={letter[0]}
+          onClick={(e) => {
+            handleLetterClick(e, letter[0]);
+          }}
+        >
           <p>
             {letter[0]}: {letter[1]}
           </p>
@@ -305,8 +358,9 @@ export const Form = () => {
       </button>
       <main className="word-cards">
         <h3>Amount of each letter left in remaining words:</h3>
+        <p>(You can also click up to 5 letters to filter down the word list further.)</p>
         <section className="letters-left">{renderedLettersLeft}</section>
-        <h3>Remaining Available Words:</h3>
+        <h3>Remaining Available Words: {renderedWords.length}</h3>
         <section className="words-left">{renderedWords}</section>
       </main>
     </div>

@@ -82,6 +82,14 @@ main {
   border-color: rgb(135, 135, 135);
 }
 
+.selected {
+  background-color: rgb(224, 224, 6);
+}
+
+.letter-count:hover {
+  cursor: pointer;
+}
+
 @media (max-width: 950px) {
   .yellow,
   .green {
