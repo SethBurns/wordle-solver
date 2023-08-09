@@ -90,6 +90,10 @@ main {
   cursor: pointer;
 }
 
+.common {
+  background-color: seagreen;
+}
+
 @media (max-width: 950px) {
   .yellow,
   .green {

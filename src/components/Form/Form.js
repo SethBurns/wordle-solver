@@ -1,6 +1,6 @@
 import './Form.css';
 import { useState } from 'react';
-import { words, previousAnswers } from '../../data/possible-words';
+import { words, previousAnswers, commonWords } from '../../data/possible-words';
 
 export const Form = () => {
   const [blackLetters, setBlackLetters] = useState('');
@@ -149,14 +149,14 @@ export const Form = () => {
   }
 
   function filterSelectedLetters(words, letters) {
-    console.log('w', words)
-    console.log('L', letters)
     if (letters.length) {
       return words.filter((word) => includesAllLetters(word, letters));
     } else {
       return words;
     }
   }
+
+  const capCommonWords = commonWords.map(word => word.toUpperCase())
 
   function filterPrev() {
     if (NYThidden) {
@@ -200,7 +200,7 @@ export const Form = () => {
 
   const renderedWords = filteredWords.map((word) => {
     return (
-      <div className="word-card" key={word}>
+      <div className={capCommonWords.includes(word) ? "common word-card" : "word-card"} key={word}>
         <p>{word.toUpperCase()}</p>
       </div>
     );
@@ -238,6 +238,7 @@ export const Form = () => {
             <input
               maxLength={1}
               name="G1"
+              pattern="[A-Za-z]"
               className="green letter"
               value={G1}
               type="text"
@@ -248,6 +249,7 @@ export const Form = () => {
             <input
               maxLength={1}
               name="G2"
+              pattern="[A-Za-z]"
               className="green letter"
               value={G2}
               type="text"
@@ -258,6 +260,7 @@ export const Form = () => {
             <input
               maxLength={1}
               name="G3"
+              pattern="[A-Za-z]"
               className="green letter"
               value={G3}
               type="text"
@@ -268,6 +271,7 @@ export const Form = () => {
             <input
               maxLength={1}
               name="G4"
+              pattern="[A-Za-z]"
               className="green letter"
               value={G4}
               type="text"
@@ -278,6 +282,7 @@ export const Form = () => {
             <input
               maxLength={1}
               name="G5"
+              pattern="[A-Za-z]"
               className="green letter"
               value={G5}
               type="text"
@@ -292,6 +297,7 @@ export const Form = () => {
           <div className="ylinputs">
             <input
               name="Y1"
+              pattern="[A-Za-z]"
               className="yellow letter"
               value={Y1}
               type="text"
@@ -301,6 +307,7 @@ export const Form = () => {
             ></input>
             <input
               name="Y2"
+              pattern="[A-Za-z]"
               className="yellow letter"
               value={Y2}
               type="text"
@@ -310,6 +317,7 @@ export const Form = () => {
             ></input>
             <input
               name="Y3"
+              pattern="[A-Za-z]"
               className="yellow letter"
               value={Y3}
               type="text"
@@ -319,6 +327,7 @@ export const Form = () => {
             ></input>
             <input
               name="Y4"
+              pattern="[A-Za-z]"
               className="yellow letter"
               value={Y4}
               type="text"
@@ -328,6 +337,7 @@ export const Form = () => {
             ></input>
             <input
               name="Y5"
+              pattern="[A-Za-z]"
               className="yellow letter"
               value={Y5}
               type="text"
@@ -340,6 +350,7 @@ export const Form = () => {
         <label htmlFor="black">Black Letters:</label>
         <input
           className="black letter"
+          pattern="[A-Za-z]"
           value={blackLetters}
           type="text"
           name="black"
@@ -361,6 +372,7 @@ export const Form = () => {
         <p>(You can also click up to 5 letters to filter down the word list further.)</p>
         <section className="letters-left">{renderedLettersLeft}</section>
         <h3>Remaining Available Words: {renderedWords.length}</h3>
+        <p>(Words highlighted green are among the most common 5-letter words.)</p>
         <section className="words-left">{renderedWords}</section>
       </main>
     </div>
