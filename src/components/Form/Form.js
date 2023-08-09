@@ -14,6 +14,10 @@ export const Form = () => {
   const [Y3, setY3] = useState('');
   const [Y4, setY4] = useState('');
   const [Y5, setY5] = useState('');
+  const [guessedButtonText, setGuessedButtonText] = useState(
+    'Hide Previous NYT Answers'
+  );
+  const [NYThidden, setNYThidden] = useState(false);
 
   function filterBlack(lettersArray, wordsArray) {
     const uppercaseLettersArray = lettersArray.map((letter) =>
@@ -111,11 +115,30 @@ export const Form = () => {
     }, {});
   }
 
-  const unusedAnswers = words
-    .map((word) => word.toUpperCase())
-    .filter((word) => {
-      return !previousAnswers.includes(word);
-    });
+  function handleGuessedClick(e) {
+    e.preventDefault();
+    if (!NYThidden) {
+      setGuessedButtonText('Show Previous NYT Answers');
+      setNYThidden(true);
+    } else {
+      setGuessedButtonText('Hide Previous NYT Answers');
+      setNYThidden(false);
+    }
+  }
+
+  function filterPrev() {
+    if(NYThidden) {
+      return words
+      .map((word) => word.toUpperCase())
+      .filter((word) => {
+        return !previousAnswers.includes(word);
+      });
+    } else {
+      return words.map(word => word.toUpperCase())
+    }
+  }
+
+  const unusedAnswers = filterPrev()
 
   const filteredGreenWords = filterGreen(G1, G2, G3, G4, G5, unusedAnswers);
   const yellowFilteredWords = filterYellow(
@@ -142,16 +165,16 @@ export const Form = () => {
 
   const lettersLeft = countLettersInWords(filteredWords);
   const renderedLettersLeft = Object.entries(lettersLeft)
-  .sort((a, b) => b[1] - a[1])
-  .map((letter) => {
-    return (
-      <div className="letter-count" key={letter[0]}>
-        <p>
-          {letter[0]}: {letter[1]}
-        </p>
-      </div>
-    );
-  });
+    .sort((a, b) => b[1] - a[1])
+    .map((letter) => {
+      return (
+        <div className="letter-count" key={letter[0]}>
+          <p>
+            {letter[0]}: {letter[1]}
+          </p>
+        </div>
+      );
+    });
 
   return (
     <div>
@@ -272,15 +295,19 @@ export const Form = () => {
           }}
         ></input>
       </form>
+      <button
+        id="guessed"
+        onClick={(e) => {
+          handleGuessedClick(e);
+        }}
+      >
+        {guessedButtonText}
+      </button>
       <main className="word-cards">
-          <h3>Amount of each letter left in remaining words:</h3>
-        <section className='letters-left'>
-          {renderedLettersLeft}
-        </section>
+        <h3>Amount of each letter left in remaining words:</h3>
+        <section className="letters-left">{renderedLettersLeft}</section>
         <h3>Remaining Available Words:</h3>
-        <section className='words-left'>
-          {renderedWords}
-        </section>
+        <section className="words-left">{renderedWords}</section>
       </main>
     </div>
   );
