@@ -9,6 +9,17 @@ html {
   text-align: center;
 }
 
+#hide {
+  background-color: rgb(255, 255, 255);
+  margin-bottom: 20px;
+  height: 35px;
+  border-radius: 5px;
+}
+
+#hide:hover {
+  cursor: pointer;
+}
+
 @media (max-width: 500px) {
   h2 {
     font-size: 15px;
