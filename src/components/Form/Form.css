@@ -87,6 +87,7 @@ main {
   .green {
     width: 30px;
     font-size: 30px;
+    margin: 3px;
   }
   .black {
     width: 80vw;
