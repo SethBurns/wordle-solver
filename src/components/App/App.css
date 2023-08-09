@@ -1,3 +1,10 @@
+html {
+  background: linear-gradient(90deg, #ebf4f6, #ace8fc);
+  align-items: center;
+  justify-content: center;
+  color: rgb(0, 0, 0);
+}
+
 .App {
   text-align: center;
 }

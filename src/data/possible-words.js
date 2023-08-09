@@ -15643,4 +15643,6 @@ export const previousAnswers = [
   'CHART',
   'ANODE',
   'POLYP',
+  'BROOK',
+  'BULLY',
 ];
